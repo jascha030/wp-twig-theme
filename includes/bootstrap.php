@@ -8,16 +8,27 @@ $loader = include __DIR__ . 'loader.php';
 
 require_once $loader(dirname(__DIR__));
 
-$definition_files = [
-    dirname(__DIR__) . '/config/theme.php'
-];
-
-function init(array $definitions): Psr\Container\ContainerInterface
+/**
+ * Creates the main container
+ *
+ * @param string $configDir
+ * @param array  $definitions
+ *
+ * @return \Psr\Container\ContainerInterface
+ */
+function init(string $configDir, array $definitions): Psr\Container\ContainerInterface
 {
+    $definition_paths = array_map(
+        static function (string $fileName) use ($configDir) {
+            return $configDir . $fileName;
+        },
+        $definitions
+    );
+
     $builder = new ContainerBuilder();
     $builder->useAutowiring(false);
     $builder->useAnnotations(false);
-    $builder->addDefinitions($definitions);
+    $builder->addDefinitions($definition_paths);
 
     try {
         $container = $builder->build();

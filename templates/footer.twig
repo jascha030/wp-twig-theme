@@ -1,0 +1,8 @@
+{# include template content and pass post variable #}
+{{ include('content/content-footer.twig', {'post': post}) }}
+
+{# In php we'd call wp_footer(), which is in fact, only a wrapper around `do_action('wp_footer');` #}
+{{ action('wp_footer') }}
+
+{# I like to pass the closing html tags as string, which prevents IDE's from nagging. #}
+{{ closing_html }}

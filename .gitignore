@@ -1,0 +1,14 @@
+# Phpstorm
+/.idea/
+
+# Composer
+/vendor/
+
+# NodeJS
+/node_modules/
+
+# MacOS
+*.DS_Store
+
+# Phpunit and PHP CS Fixer caches
+**.cache

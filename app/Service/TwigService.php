@@ -11,7 +11,8 @@ class TwigService implements TwigServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(Environment $environment) {
+    public function __construct(Environment $environment)
+    {
         $this->environment = $environment;
     }
 

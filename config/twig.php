@@ -6,6 +6,8 @@ use Psr\Container\ContainerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Twig container definitions for php-di/php-di
@@ -15,19 +17,55 @@ use Twig\Loader\LoaderInterface;
  */
 return [
     /**
-     * Env variables
+     * Twig env variables
      */
     'twig.root' => dirname(__DIR__) . '/templates',
+    /**
+     * Twig Extensions
+     * @link https://twig.symfony.com/doc/3.x/advanced.html
+     *
+     * twig.functions
+     * @link https://twig.symfony.com/doc/3.x/advanced.html#filters
+     * twig.filters
+     * @link https://twig.symfony.com/doc/3.x/advanced.html#filters
+     */
+    'twig.functions' => [
+        // Adds WordPress' do_action and do_filter functions as twig functions to be used inside templates.
+        'action' => static function (string $tag, ...$arguments): void {
+            do_action($tag, ...$arguments);
+        },
+        'filter' => static function (string $tag, ...$arguments): void {
+            do_filter($tag, ...$arguments);
+        },
+    ],
+    'twig.filters' => [],
     /**
      * Interfaces and class-bindings
      */
     LoaderInterface::class => static function (ContainerInterface $container): LoaderInterface {
         return new FilesystemLoader($container->get('twig.root'));
     },
+    /**
+     * Twig Environment factory binding.
+     *
+     * @uses  LoaderInterface::class as key to retrieve the defined loader from the container.
+     * @uses `twig.functions` key to retrieve twig function extensions to be added to Environment, from the container.
+     * @uses `twig.filters`   key to retrieve twig filter extensions to be added to Environment, from the container.
+     */
     Environment::class => static function (ContainerInterface $container): Environment {
-        return new Environment($container->get(LoaderInterface::class), []);
+        $environment = new Environment($container->get(LoaderInterface::class), []);
+
+        foreach ($container->get('twig.functions') as $key => $closure) {
+            $environment->addFunction(new TwigFunction($key, $closure));
+        }
+
+        foreach ($container->get('twig.filters') as $key => $closure) {
+            $environment->addFilter(new TwigFilter($key, $closure));
+        }
+
+        return $environment;
     },
     TwigServiceInterface::class => static function (ContainerInterface $container): TwigServiceInterface {
         return new TwigService($container->get(Environment::class));
-    }
+    },
 ];

@@ -1,29 +1,30 @@
 {
-    "name": "jascha030/wp-twig-theme",
-    "description": "Twig theme example",
-    "type": "wordpress-theme",
-    "require": {
-        "php": "^7.4",
-        "twig/twig": "3.x-dev",
-        "php-di/php-di": "dev-master"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "friendsofphp/php-cs-fixer": "dev-master",
-        "symfony/var-dumper": "5.4.x-dev",
-        "phpunit/phpunit": "9.5.x-dev"
-    },
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Jascha030\\TwigTheme\\": "app/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Jascha030",
-            "email": "contact@jaschavanaalst.nl"
-        }
-    ],
-    "minimum-stability": "dev"
+  "name": "jascha030/wp-twig-theme",
+  "description": "A simple WordPress starter theme based around twig/twig and php-di/php-di",
+  "type": "wordpress-theme",
+  "require": {
+    "php": "^7.4",
+    "twig/twig": "^3",
+    "php-di/php-di": "^6.3"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "friendsofphp/php-cs-fixer": "^3",
+    "symfony/var-dumper": "^5",
+    "phpunit/phpunit": "^9"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Jascha030\\TwigTheme\\": "app/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Jascha030",
+      "email": "contact@jaschavanaalst.nl"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

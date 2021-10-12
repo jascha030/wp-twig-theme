@@ -1,0 +1,27 @@
+{
+    "name": "jascha030/wp-twig-theme",
+    "description": "Twig theme example",
+    "type": "wordpress-theme",
+    "require": {
+        "php": "^7.4",
+        "twig/twig": "3.x-dev"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "symfony/var-dumper": "5.4.x-dev",
+        "phpunit/phpunit": "9.5.x-dev"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Jascha030\\WpTwigTheme\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jascha030",
+            "email": "contact@jaschavanaalst.nl"
+        }
+    ],
+    "minimum-stability": "dev"
+}

@@ -1,11 +1,11 @@
 <?php
+
 /**
- * Theme footer.
+ * Theme footer: Renders footer element, calls wp_footer action and renders html closing tags.
  *
- * @see https://codex.wordpress.org/Template_Hierarchy
+ * @see      wp_footer
+ * @see      twig_render
+ * @link     https://codex.wordpress.org/Template_Hierarchy
+ * @template templates/footer.twig
  */
-get_template_part('templates/layout/layout', 'footer');
-
-wp_footer();
-
-echo '</body></html>';
+twig_render('footer.twig', ['closing_html' => '</body></html>']);

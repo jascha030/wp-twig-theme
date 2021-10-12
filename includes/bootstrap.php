@@ -1,15 +1,33 @@
 <?php
 
+/**
+ * Theme's bootstrap script.
+ *
+ * Loads the composer autoloader based on its possible locations, within a WordPress install and adds function to init
+ * theme's Container object.
+ *
+ * @see  ContainerInterface
+ * @link https://www.php-fig.org/psr/psr-11/
+ */
+
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
 
+/**
+ * Returns private static resolver function to resolve the vendor/autoload.php location, which could be either in the
+ * theme directory, the WordPress root, or a starter-environment git root.
+ */
 $loader = include __DIR__ . 'loader.php';
 
+/**
+ * Pass the theme root path to the resolver function.
+ */
 require_once $loader(dirname(__DIR__));
 
 /**
  * Creates the main container
+ * {@see init}
  *
  * @param string $configDir
  * @param array  $definitions
@@ -38,7 +56,6 @@ function init(string $configDir, array $definitions): Psr\Container\ContainerInt
         }
 
         wp_die($e->getMessage());
-        exit;
     }
 
     return $container;

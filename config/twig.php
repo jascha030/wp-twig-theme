@@ -12,24 +12,34 @@ use Twig\TwigFunction;
 /**
  * Twig container definitions for php-di/php-di
  *
+ * @see  ContainerInterface
+ * @see  \DI\Container
  * @link https://php-di.org/doc/php-definitions.html
  * @link https://twig.symfony.com/doc/3.x/
  */
 return [
     /**
      * Twig env variables
+     *
+     * @see \Twig\Environment
      */
-    'twig.root' => dirname(__DIR__) . '/templates',
+    'twig.root'                 => dirname(__DIR__) . '/templates',
     /**
      * Twig Extensions
+     *
      * @link https://twig.symfony.com/doc/3.x/advanced.html
      *
      * twig.functions
-     * @link https://twig.symfony.com/doc/3.x/advanced.html#filters
+     *
+     * @see TwigFunction
+     * @link https://twig.symfony.com/doc/3.x/advanced.html#functions
+     *
      * twig.filters
+     *
+     * @see TwigFilter
      * @link https://twig.symfony.com/doc/3.x/advanced.html#filters
      */
-    'twig.functions' => [
+    'twig.functions'            => [
         // Adds WordPress' do_action and do_filter functions as twig functions to be used inside templates.
         'action' => static function (string $tag, ...$arguments): void {
             do_action($tag, ...$arguments);
@@ -38,21 +48,25 @@ return [
             do_filter($tag, ...$arguments);
         },
     ],
-    'twig.filters' => [],
+    'twig.filters'              => [],
     /**
      * Interfaces and class-bindings
+     *
+     * @see  LoaderInterface
+     * @uses \Twig\Loader\FilesystemLoader
      */
-    LoaderInterface::class => static function (ContainerInterface $container): LoaderInterface {
+    LoaderInterface::class      => static function (ContainerInterface $container): LoaderInterface {
         return new FilesystemLoader($container->get('twig.root'));
     },
     /**
      * Twig Environment factory binding.
      *
-     * @uses  LoaderInterface::class as key to retrieve the defined loader from the container.
-     * @uses `twig.functions` key to retrieve twig function extensions to be added to Environment, from the container.
-     * @uses `twig.filters`   key to retrieve twig filter extensions to be added to Environment, from the container.
+     * @see   LoaderInterface
+     * @uses  LoaderInterface::class, as key to retrieve the defined loader from the container.
+     * @uses  'twig.functions' key to retrieve twig function extensions to be added to Environment, from the container.
+     * @uses  'twig.filters'   key to retrieve twig filter extensions to be added to Environment, from the container.
      */
-    Environment::class => static function (ContainerInterface $container): Environment {
+    Environment::class          => static function (ContainerInterface $container): Environment {
         $environment = new Environment($container->get(LoaderInterface::class), []);
 
         foreach ($container->get('twig.functions') as $key => $closure) {

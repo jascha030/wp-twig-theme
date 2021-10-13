@@ -39,16 +39,30 @@ return [
      * @see TwigFilter
      * @link https://twig.symfony.com/doc/3.x/advanced.html#filters
      */
-    'twig.functions'            => [
-        // Adds WordPress' do_action and do_filter functions as twig functions to be used inside templates.
-        'action' => static function (string $tag, ...$arguments): void {
-            do_action($tag, ...$arguments);
-        },
-        'filter' => static function (string $tag, ...$arguments): void {
-            do_filter($tag, ...$arguments);
-        },
-    ],
-    'twig.filters'              => [],
+    'twig.functions'            => static function (ContainerInterface $container) {
+        return [
+            // Adds WordPress' do_action and do_filter functions as twig functions to be used inside templates.
+            'action' => static function (string $tag, ...$arguments): void {
+                do_action($tag, ...$arguments);
+            },
+            'filter' => static function (string $tag, ...$arguments): void {
+                do_filter($tag, ...$arguments);
+            },
+            'parse_blocks' => static function (string $content): array {
+                return parse_blocks($content);
+            },
+            'render_block' => static function (array $content): string {
+                return render_block($content);
+            }
+        ];
+    },
+    'twig.filters'              => static function (ContainerInterface $container) {
+        return [
+            'translatable' => static function (string $string) use ($container) {
+                return __($string, $container->get('theme.domain'));
+            }
+        ];
+    },
     /**
      * Interfaces and class-bindings
      *
@@ -67,7 +81,7 @@ return [
      * @uses  'twig.filters'   key to retrieve twig filter extensions to be added to Environment, from the container.
      */
     Environment::class          => static function (ContainerInterface $container): Environment {
-        $environment = new Environment($container->get(LoaderInterface::class), []);
+        $environment = new Environment($container->get(LoaderInterface::class));
 
         foreach ($container->get('twig.functions') as $key => $closure) {
             $environment->addFunction(new TwigFunction($key, $closure));
@@ -76,6 +90,8 @@ return [
         foreach ($container->get('twig.filters') as $key => $closure) {
             $environment->addFilter(new TwigFilter($key, $closure));
         }
+
+        $environment->addGlobal('post', []);
 
         return $environment;
     },

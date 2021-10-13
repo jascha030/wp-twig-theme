@@ -18,7 +18,7 @@ use DI\ContainerBuilder;
  * Returns private static resolver function to resolve the vendor/autoload.php location, which could be either in the
  * theme directory, the WordPress root, or a starter-environment git root.
  */
-$loader = include __DIR__ . 'loader.php';
+$loader = include __DIR__ . '/loader.php';
 
 /**
  * Pass the theme root path to the resolver function.
@@ -38,7 +38,7 @@ function init(string $configDir, array $definitions): Psr\Container\ContainerInt
 {
     $definition_paths = array_map(
         static function (string $fileName) use ($configDir) {
-            return $configDir . $fileName;
+            return $configDir .$fileName;
         },
         $definitions
     );
@@ -46,7 +46,7 @@ function init(string $configDir, array $definitions): Psr\Container\ContainerInt
     $builder = new ContainerBuilder();
     $builder->useAutowiring(false);
     $builder->useAnnotations(false);
-    $builder->addDefinitions($definition_paths);
+    $builder->addDefinitions(...$definition_paths);
 
     try {
         $container = $builder->build();

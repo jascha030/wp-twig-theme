@@ -1,0 +1,5 @@
+{% extends 'index.twig' %}
+
+{% block main %}
+    {{ include(['content/' ~ post.post_type ~ '.twig', 'content/content.twig']) }}
+{% endblock %}

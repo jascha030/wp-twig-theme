@@ -1,0 +1,11 @@
+{% extends 'content/content.twig' %}
+
+{% block title %}
+    <h1>{{ post.post_title }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="post_content post_content__{{ post.post_content }}">
+        {{ parent() }}
+    </div>
+{% endblock %}

@@ -11,6 +11,6 @@
 twig_render('header.twig', [
     'language_attributes' => get_language_attributes(),
     'charset'             => get_bloginfo('charset'),
-    'title'               => wp_title(),
-    'body_classes'        => get_body_class(),
+    'title'               => wp_title($sep = '&raquo;', false),
+    'body_classes'        => implode(' ', get_body_class()),
 ]);

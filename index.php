@@ -4,15 +4,11 @@
  *
  * @see https://codex.wordpress.org/Template_Hierarchy
  */
+
+use Jascha030\TwigTheme\Twig\Loop;
+
 get_header();
 
-if (have_posts()) {
-    while (have_posts()) {
-        the_post();
-        get_template_part('templates/content/content', 'frontpage');
-    }
-} else {
-    get_template_part('templates/content/content', 'none');
-}
+Loop::start();
 
 get_footer();

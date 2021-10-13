@@ -6,6 +6,6 @@
  */
 get_header();
 
-get_template_part('templates/content/content', 'none');
+twig_render('404.twig');
 
 get_footer();
